@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import CardLists from "./CardLists";
 
 const Header = styled.div`
   border-bottom: solid 2px gainsboro;
@@ -11,6 +11,9 @@ const Header = styled.div`
 const Title = styled.div`
   font-weight: 600;
   font-size: 2rem;
+  &:hover {
+    color: orange;
+  }
 `;
 const Option = styled.div``;
 const Select = styled.select`
@@ -35,7 +38,11 @@ const HeaderPage = () => {
   return (
     <>
       <Header>
-        <Title>Pokemon</Title>
+        <Link to={"/"}>
+          {" "}
+          <Title>Pokemon</Title>
+        </Link>
+
         <Option>
           {" "}
           <Button>Dark</Button>
@@ -45,7 +52,6 @@ const HeaderPage = () => {
           </Select>
         </Option>
       </Header>
-      <CardLists />
     </>
   );
 };

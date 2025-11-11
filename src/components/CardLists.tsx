@@ -1,5 +1,23 @@
 import styled from "styled-components";
 import Card from "./Card";
+import { Link } from "react-router-dom";
+
+const CardLists = () => {
+  return (
+    <>
+      <CardList>
+        {Array.from({ length: 10 }).map((_, index) => (
+          <Link to={"/pokemon/:name"}>
+            <li key={index}>
+              <Card />
+            </li>
+          </Link>
+        ))}
+      </CardList>
+    </>
+  );
+};
+
 const CardList = styled.ul`
   padding: 1rem 0;
   display: grid;
@@ -7,22 +25,7 @@ const CardList = styled.ul`
   gap: 10px;
   width: 100%;
   margin: 0 auto;
-  list-style: none;
   justify-items: center;
 `;
-
-const CardLists = () => {
-  return (
-    <>
-      <CardList>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <li key={index}>
-            <Card />
-          </li>
-        ))}
-      </CardList>
-    </>
-  );
-};
 
 export default CardLists;
