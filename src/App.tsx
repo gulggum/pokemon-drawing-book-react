@@ -1,9 +1,9 @@
-import { useState } from "react";
+import HeaderPage from "./components/HeaderPage";
 
 function App() {
   return (
     <>
-      <h1>개발시작</h1>
+      <HeaderPage></HeaderPage>
     </>
   );
 }
