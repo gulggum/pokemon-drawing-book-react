@@ -1,15 +1,29 @@
 import styled from "styled-components";
 import Card from "./Card";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { type PokemonListApiType, dataListApi } from "../api/DataApi";
 
 const CardLists = () => {
+  const [pokemons, setPokemons] = useState<PokemonListApiType>({
+    next: "",
+    results: [],
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await dataListApi("pokemon");
+      setPokemons(result);
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <CardList>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <Link to={"/pokemon/:name"}>
-            <li key={index}>
-              <Card />
+        {pokemons.results.map((pokemon) => (
+          <Link to={`/pokemon/${pokemon.name}`}>
+            <li key={pokemon.name}>
+              <Card key={pokemon.name} pokemon={pokemon} />
             </li>
           </Link>
         ))}

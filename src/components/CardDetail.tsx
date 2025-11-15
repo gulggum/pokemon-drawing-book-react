@@ -4,6 +4,14 @@ const ImageURL =
   "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNTA0MThfMzMg%2FMDAxNzQ0OTYxMjM2ODUx.StsN_-mvQCVUF9VmSA5dDFofjeXCaOHCaHZste6yz34g.6u59Ge8HARM0ki3ADgPOYgfVgvWedtmmC5q2mmYZtXkg.PNG%2F%25C6%25F7%25BD%25C7%25C7%25CE.PNG&type=sc960_832";
 
 const CardDetail = () => {
+  // const { name } = useParams<{ name: string }>();
+
+  // useEffect(() => {
+  //   if (name) {
+  //     detailApi(name);
+  //   }
+  //   return;
+  // }, []);
   return (
     <>
       <Box>
@@ -19,6 +27,18 @@ const CardDetail = () => {
             <Li>
               <Span>이름</Span>
               <Span>하츄핑</Span>
+            </Li>{" "}
+            <Li>
+              <Span>타입</Span>
+              <Span>독성</Span>
+            </Li>
+            <Li>
+              <Span>키</Span>
+              <Span>0.7m</Span>
+            </Li>
+            <Li>
+              <Span>몸무게</Span>
+              <Span>6.9kg</Span>
             </Li>
           </Info>
           <h2>능력치</h2>
@@ -29,6 +49,22 @@ const CardDetail = () => {
             </Li>
             <Li>
               <Span>Attack</Span>
+              <Span>80</Span>
+            </Li>
+            <Li>
+              <Span>Defense</Span>
+              <Span>80</Span>
+            </Li>
+            <Li>
+              <Span>Special-Attack</Span>
+              <Span>80</Span>
+            </Li>
+            <Li>
+              <Span>Special-Defense</Span>
+              <Span>80</Span>
+            </Li>
+            <Li>
+              <Span>speed</Span>
               <Span>80</Span>
             </Li>
           </Info>

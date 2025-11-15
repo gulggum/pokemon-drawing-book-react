@@ -1,18 +1,45 @@
 import styled from "styled-components";
+import { detailApi, type DetailType } from "../api/DataApi";
+import { useEffect, useState } from "react";
 
-const ImageURL =
-  "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNTA0MThfMzMg%2FMDAxNzQ0OTYxMjM2ODUx.StsN_-mvQCVUF9VmSA5dDFofjeXCaOHCaHZste6yz34g.6u59Ge8HARM0ki3ADgPOYgfVgvWedtmmC5q2mmYZtXkg.PNG%2F%25C6%25F7%25BD%25C7%25C7%25CE.PNG&type=sc960_832";
+interface CardProps {
+  pokemon: {
+    name: string;
+    url: string;
+  };
+}
 
-const Card = () => {
+const Card = ({ pokemon }: CardProps) => {
+  const [pokemonInfo, setPokemonInfo] = useState<Partial<DetailType>>({
+    id: 0,
+    height: 0,
+    weight: 0,
+    types: [],
+    sprites: {
+      front_default: "",
+    },
+    stats: [],
+    image: "",
+    color: { name: "" },
+    koreanName: "",
+  });
+  useEffect(() => {
+    const getDetailData = async () => {
+      const result = await detailApi(pokemon.name);
+      console.log(result);
+      setPokemonInfo(result);
+    };
+    getDetailData();
+  }, [pokemon.name]);
   return (
     <>
       <Box>
         <Top>
-          <Name>이상해씨</Name>
-          <Number>120</Number>
+          <Name>{pokemonInfo.koreanName}</Name>
+          <Number>{pokemonInfo?.id}</Number>
         </Top>
         <Body>
-          <Img src={ImageURL} alt="" />
+          <Img src={pokemonInfo?.image} alt="" />
         </Body>
         <Bottom>
           <div></div>
@@ -38,7 +65,7 @@ const Top = styled.div`
   justify-content: space-between;
 `;
 const Name = styled.span`
-  background-color: #e7e774;
+  background-color: ${(props) => props.color};
   padding: 3px 10px;
   border-radius: 25px;
   font-size: 0.8rem;
