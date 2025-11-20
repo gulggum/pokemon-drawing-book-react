@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { detailApi } from "../api/DataApi";
+import { FaQuestion } from "react-icons/fa";
 
 interface DetailProps {
   color: string;
@@ -22,7 +23,17 @@ type Stat = {
 const CardDetail = () => {
   const { name } = useParams();
   const [detailData, setDetailData] = useState<DetailProps>();
-  console.log(name);
+
+  // const name = undefined;
+  if (!name) {
+    return (
+      <>
+        <Box>
+          <StyleQuestion />
+        </Box>
+      </>
+    );
+  }
   useEffect(() => {
     const getData = async () => {
       const result = await detailApi(name);
@@ -31,6 +42,7 @@ const CardDetail = () => {
     getData();
   }, [name]);
   console.log(detailData);
+
   return (
     <>
       <Box>
@@ -50,13 +62,11 @@ const CardDetail = () => {
             <Li>
               <Span>타입</Span>
               <Span>
-                {detailData?.type.map((type) => (
-                  <span>{type}</span>
-                ))}
+                <span>{detailData?.type.join(" ,")}</span>
               </Span>
             </Li>
             <Li>
-              <Span style={{ marginLeft: "14px" }}>키</Span>
+              <Span>키</Span>
               {detailData && <Span>{detailData.height / 10}m</Span>}
             </Li>
             <Li>
@@ -65,14 +75,14 @@ const CardDetail = () => {
             </Li>
           </Info>
           <h2>능력치</h2>
-          <Info>
+          <AbilityValue>
             {detailData?.statInfo.map((stat) => (
               <Li>
                 <Span key={detailData.id}>{stat.name}</Span>
                 <Span>{stat.value}</Span>
               </Li>
             ))}
-          </Info>
+          </AbilityValue>
 
           <Footer>
             <div></div>
@@ -86,7 +96,7 @@ const CardDetail = () => {
 const Box = styled.div`
   width: 100%;
   margin-top: 1rem;
-  padding: 2rem 0 1rem 0;
+  padding: 1rem 0 1rem 0;
   border: 1px solid gainsboro;
   border-radius: 10px;
   display: flex;
@@ -101,33 +111,51 @@ const Img = styled.img`
 
 const InfoBox = styled.div`
   padding: 0 1rem;
+  & Info:first-child {
+  }
 `;
 
 const Info = styled.ul`
   margin-bottom: 2rem;
   padding: 0;
+  & span:first-child {
+    display: inline-block;
+    width: 100px;
+  }
+`;
+const AbilityValue = styled.ul`
+  margin-bottom: 2rem;
+  padding: 0;
+  & span:first-child {
+    display: inline-block;
+    width: 140px;
+  }
 `;
 
 const Li = styled.li`
   margin-left: 1rem;
   padding-bottom: 8px;
   padding-top: 10px;
-
   border-bottom: 1px solid gainsboro;
 `;
-const Span = styled.span`
-  width: 45px;
-  padding-right: 1rem;
-`;
+const Span = styled.span``;
 
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 const Company = styled.span`
-  background-color: #e7e774;
+  border: 1px solid gainsboro;
   padding: 3px 10px;
   border-radius: 25px;
   font-size: 0.8rem;
+`;
+const StyleQuestion = styled(FaQuestion)`
+  font-size: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #eece26;
 `;
 export default CardDetail;

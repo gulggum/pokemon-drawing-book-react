@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const remote = axios.create({
-  baseURL: "https://pokeapi.co/api/v2/",
+  baseURL: "https://pokeapi.co/api/v2",
   timeout: 2000,
 });
 
@@ -13,9 +13,10 @@ export interface PokemonListApiType {
   }[];
 }
 
-export const dataListApi = async (endpoint: string) => {
+export const dataListApi = async (nextUrl?: string) => {
   try {
-    const getData = await remote.get<PokemonListApiType>(endpoint);
+    const requestUrl = nextUrl ?? "https://pokeapi.co/api/v2/pokemon";
+    const getData = await remote.get<PokemonListApiType>(requestUrl);
     const list = getData.data;
     return list;
   } catch (error) {

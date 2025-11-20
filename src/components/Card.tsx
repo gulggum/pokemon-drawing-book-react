@@ -30,13 +30,12 @@ const Card = ({ pokemon }: CardProps) => {
     };
     getDetailData();
   }, [pokemon.name]);
-  console.log(pokemonInfo);
   return (
     <>
       <Box>
         <Top>
           <Name bgColor={pokemonInfo?.color}>{pokemonInfo?.koreanName}</Name>
-          <Number>{pokemonInfo?.id}</Number>
+          <Number>{String(pokemonInfo?.id).padStart(3, "0")}</Number>
         </Top>
         <Body>
           <Img src={pokemonInfo?.image} alt={pokemonInfo?.koreanName} />
@@ -73,8 +72,9 @@ const Name = styled.span<NameColorProps>`
 `;
 const Number = styled.span`
   padding: 3px 10px;
-  border-radius: 25px;
+  border-radius: 10px;
   font-size: 0.8rem;
+  border: 1px solid gainsboro;
 `;
 
 const Body = styled.div`
@@ -88,10 +88,10 @@ const Bottom = styled.div`
   justify-content: space-between;
 `;
 const Company = styled.span`
-  background-color: #e7e774;
   padding: 3px 10px;
   border-radius: 25px;
   font-size: 0.8rem;
+  border: 1px solid gainsboro;
 `;
 
 export default Card;
