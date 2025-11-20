@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { detailApi, type DetailType } from "../api/DataApi";
+import { detailApi } from "../api/DataApi";
 import { useEffect, useState } from "react";
 
 interface CardProps {
@@ -8,42 +8,42 @@ interface CardProps {
     url: string;
   };
 }
+interface DetailProps {
+  color: string;
+  height: number;
+  id: number;
+  image: string;
+  koreanName: string;
+  type: string[];
+  weight: number;
+}
+interface NameColorProps {
+  bgColor?: string;
+}
 
 const Card = ({ pokemon }: CardProps) => {
-  const [pokemonInfo, setPokemonInfo] = useState<Partial<DetailType>>({
-    id: 0,
-    height: 0,
-    weight: 0,
-    types: [],
-    sprites: {
-      front_default: "",
-    },
-    stats: [],
-    image: "",
-    color: { name: "" },
-    koreanName: "",
-  });
+  const [pokemonInfo, setPokemonInfo] = useState<DetailProps>();
   useEffect(() => {
     const getDetailData = async () => {
       const result = await detailApi(pokemon.name);
-      console.log(result);
       setPokemonInfo(result);
     };
     getDetailData();
   }, [pokemon.name]);
+  console.log(pokemonInfo);
   return (
     <>
       <Box>
         <Top>
-          <Name>{pokemonInfo.koreanName}</Name>
+          <Name bgColor={pokemonInfo?.color}>{pokemonInfo?.koreanName}</Name>
           <Number>{pokemonInfo?.id}</Number>
         </Top>
         <Body>
-          <Img src={pokemonInfo?.image} alt="" />
+          <Img src={pokemonInfo?.image} alt={pokemonInfo?.koreanName} />
         </Body>
         <Bottom>
           <div></div>
-          <Company>company</Company>
+          <Company>Pokemon`</Company>
         </Bottom>
       </Box>
     </>
@@ -64,14 +64,14 @@ const Top = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-const Name = styled.span`
-  background-color: ${(props) => props.color};
+const Name = styled.span<NameColorProps>`
+  background-color: ${(props) => props.bgColor};
+  color: white;
   padding: 3px 10px;
   border-radius: 25px;
   font-size: 0.8rem;
 `;
 const Number = styled.span`
-  background-color: #e7e774;
   padding: 3px 10px;
   border-radius: 25px;
   font-size: 0.8rem;

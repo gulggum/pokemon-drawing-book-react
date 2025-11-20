@@ -5,29 +5,37 @@ import { useEffect, useState } from "react";
 import { type PokemonListApiType, dataListApi } from "../api/DataApi";
 
 const CardLists = () => {
+  const [loading, setLoading] = useState(true);
   const [pokemons, setPokemons] = useState<PokemonListApiType>({
     next: "",
     results: [],
   });
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const result = await dataListApi("pokemon");
       setPokemons(result);
+      setLoading(false);
     };
     fetchData();
   }, []);
 
   return (
     <>
-      <CardList>
-        {pokemons.results.map((pokemon) => (
-          <Link to={`/pokemon/${pokemon.name}`}>
-            <li key={pokemon.name}>
-              <Card key={pokemon.name} pokemon={pokemon} />
-            </li>
-          </Link>
-        ))}
-      </CardList>
+      {loading ? (
+        "loading..."
+      ) : (
+        <CardList>
+          {pokemons.results.map((pokemon) => (
+            <Link to={`/pokemon/${pokemon.name}`}>
+              <li key={pokemon.name}>
+                <Card key={pokemon.name} pokemon={pokemon} />
+              </li>
+            </Link>
+          ))}
+        </CardList>
+      )}
     </>
   );
 };

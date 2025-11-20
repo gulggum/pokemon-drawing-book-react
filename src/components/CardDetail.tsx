@@ -1,72 +1,77 @@
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { detailApi } from "../api/DataApi";
 
-const ImageURL =
-  "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNTA0MThfMzMg%2FMDAxNzQ0OTYxMjM2ODUx.StsN_-mvQCVUF9VmSA5dDFofjeXCaOHCaHZste6yz34g.6u59Ge8HARM0ki3ADgPOYgfVgvWedtmmC5q2mmYZtXkg.PNG%2F%25C6%25F7%25BD%25C7%25C7%25CE.PNG&type=sc960_832";
+interface DetailProps {
+  color: string;
+  height: number;
+  id: number;
+  image: string;
+  koreanName: string;
+  type: string[];
+  weight: number;
+  statInfo: Stat[];
+}
+
+type Stat = {
+  name: string;
+  value: number;
+};
 
 const CardDetail = () => {
-  // const { name } = useParams<{ name: string }>();
-
-  // useEffect(() => {
-  //   if (name) {
-  //     detailApi(name);
-  //   }
-  //   return;
-  // }, []);
+  const { name } = useParams();
+  const [detailData, setDetailData] = useState<DetailProps>();
+  console.log(name);
+  useEffect(() => {
+    const getData = async () => {
+      const result = await detailApi(name);
+      setDetailData(result);
+    };
+    getData();
+  }, [name]);
+  console.log(detailData);
   return (
     <>
       <Box>
-        <Img src={ImageURL} alt="img"></Img>
+        <Img src={detailData?.image} alt={detailData?.image}></Img>
 
         <InfoBox>
           <h2>기본정보</h2>
           <Info>
             <Li>
               <Span>번호</Span>
-              <Span>001</Span>
+              <Span>{detailData?.id}</Span>
             </Li>
             <Li>
               <Span>이름</Span>
-              <Span>하츄핑</Span>
+              <Span>{detailData?.koreanName}</Span>
             </Li>{" "}
             <Li>
               <Span>타입</Span>
-              <Span>독성</Span>
+              <Span>
+                {detailData?.type.map((type) => (
+                  <span>{type}</span>
+                ))}
+              </Span>
             </Li>
             <Li>
-              <Span>키</Span>
-              <Span>0.7m</Span>
+              <Span style={{ marginLeft: "14px" }}>키</Span>
+              {detailData && <Span>{detailData.height / 10}m</Span>}
             </Li>
             <Li>
               <Span>몸무게</Span>
-              <Span>6.9kg</Span>
+              {detailData && <Span>{detailData.weight / 10}kg</Span>}
             </Li>
           </Info>
           <h2>능력치</h2>
           <Info>
-            <Li>
-              <Span>Hp</Span>
-              <Span>100</Span>
-            </Li>
-            <Li>
-              <Span>Attack</Span>
-              <Span>80</Span>
-            </Li>
-            <Li>
-              <Span>Defense</Span>
-              <Span>80</Span>
-            </Li>
-            <Li>
-              <Span>Special-Attack</Span>
-              <Span>80</Span>
-            </Li>
-            <Li>
-              <Span>Special-Defense</Span>
-              <Span>80</Span>
-            </Li>
-            <Li>
-              <Span>speed</Span>
-              <Span>80</Span>
-            </Li>
+            {detailData?.statInfo.map((stat) => (
+              <Li>
+                <Span key={detailData.id}>{stat.name}</Span>
+                <Span>{stat.value}</Span>
+              </Li>
+            ))}
           </Info>
 
           <Footer>
@@ -111,6 +116,7 @@ const Li = styled.li`
   border-bottom: 1px solid gainsboro;
 `;
 const Span = styled.span`
+  width: 45px;
   padding-right: 1rem;
 `;
 

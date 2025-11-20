@@ -38,9 +38,9 @@ export interface DetailType {
     front_default: string;
   };
   stats: StatItemType[];
-  image: string;
-
-  color: { name: string };
+  color: {
+    name: string;
+  };
   names: {
     name: string;
     language: {
@@ -67,9 +67,24 @@ export const detailApi = async (name: string) => {
     "unknown";
 
   const { id, height, weight } = getData.data;
-  const { front_default } = getData.data.sprites;
+  const { name: color } = getSpecies.data.color;
+  const { front_default: image } = getData.data.sprites;
   const type = getData.data.types.map((item) => item.type.name);
-  const statInfo = getData.data.stats.map((item) => item.stat.name);
+  const statInfo = getData.data.stats.map((name) => {
+    return {
+      name: name.stat.name,
+      value: name.base_stat,
+    };
+  });
 
-  return { id, height, weight, type, image: front_default, koreanName };
+  return {
+    id,
+    height,
+    weight,
+    color,
+    type,
+    image,
+    koreanName,
+    statInfo,
+  };
 };
