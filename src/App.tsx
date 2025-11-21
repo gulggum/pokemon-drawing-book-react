@@ -3,6 +3,8 @@ import HeaderPage from "./components/HeaderPage";
 import { createGlobalStyle, styled } from "styled-components";
 import CardLists from "./components/CardLists";
 import CardDetail from "./components/CardDetail";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 const GlobalStyle = createGlobalStyle`
 a{
@@ -23,15 +25,17 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <BrowserRouter>
-        <Container>
-          <HeaderPage />
-          <Routes>
-            <Route path="/" element={<CardLists />} />
-            <Route path="/pokemon/:name" element={<CardDetail />} />
-          </Routes>
-        </Container>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Container>
+            <HeaderPage />
+            <Routes>
+              <Route path="/" element={<CardLists />} />
+              <Route path="/pokemon/:name" element={<CardDetail />} />
+            </Routes>
+          </Container>
+        </BrowserRouter>
+      </Provider>
     </>
   );
 }
