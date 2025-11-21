@@ -38,6 +38,8 @@ export interface DetailType {
   }[];
   sprites: {
     front_default: string;
+    front_shiny: string;
+    back_shiny: string;
   };
   stats: StatItemType[];
   color: {
