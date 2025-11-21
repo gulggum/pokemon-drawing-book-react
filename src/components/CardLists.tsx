@@ -3,39 +3,49 @@ import Card from "./Card";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { type PokemonListApiType, dataListApi } from "../api/DataApi";
-import useInfiniteScroll from "react-infinite-scroll-hook";
+import { useInView } from "react-intersection-observer";
 
 const CardLists = () => {
   const [loading, setLoading] = useState(true);
   const [pokemons, setPokemons] = useState<PokemonListApiType>({
+    count: 0,
     next: "",
     results: [],
   });
-
-  const [infiniteRef] = useInfiniteScroll({
-    loading: false, //현재 로딩 중이면 스크롤 이벤트 무시
-    hasNextPage: pokemons.next != "", //다음 페이지가 없으면 더 이상 스크롤 안함
-    onLoadMore: async () => {
-      const morePokemons = await dataListApi(pokemons.next);
-      setPokemons({
-        ...morePokemons,
-        results: [...morePokemons.results, ...morePokemons.results],
-      });
-      console.log(pokemons);
-    }, //다음 데이터를 불러오는 콜백 (여기선 loadMore)
-    disabled: false, //true면 스크롤 감지 비활성화, 여기선 error 발생하면 멈추도록
-    rootMargin: "0px 0px 400px 0px", //IntersectionObserver 옵션, 감지 지점 설정/아래에서 400px 남았을 때 onLoadMore 트리거
+  const [isFetching, setIsFetching] = useState(false); //중복 호출 방지
+  const { ref, inView } = useInView({
+    threshold: 0,
   });
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const result = await dataListApi("pokemon");
+      if (isFetching) return; // 이미 fetch 중이면 건너뜀
+      setIsFetching(true);
+      const result = await dataListApi(); //기본 20개 랜더링
       setPokemons(result);
       setLoading(false);
+      setIsFetching(false);
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const loadMore = async () => {
+      if (!pokemons.next || isFetching) return;
+      setIsFetching(true);
+      const morePokemons = await dataListApi(pokemons.next);
+      setPokemons({
+        ...pokemons,
+        next: morePokemons.next,
+        results: [...pokemons.results, ...morePokemons.results], //기존 + 새 데이터
+      });
+      setIsFetching(false);
+    };
+    if (inView) {
+      loadMore();
+    }
+  }, [inView]);
 
   return (
     <>
@@ -44,15 +54,14 @@ const CardLists = () => {
       ) : (
         <>
           <CardList>
-            {pokemons.results.map((pokemon) => (
-              <Link to={`/pokemon/${pokemon.name}`}>
-                <li key={pokemon.name}>
-                  <Card key={pokemon.name} pokemon={pokemon} />
+            {pokemons.results.map((pokemon, index) => (
+              <Link key={pokemon.name} to={`/pokemon/${pokemon.name}`}>
+                <li ref={index === pokemons.results.length - 1 ? ref : null}>
+                  <Card pokemon={pokemon} />
                 </li>
               </Link>
             ))}
           </CardList>
-          <InfinityBox ref={infiniteRef}>loading...</InfinityBox>
         </>
       )}
     </>
@@ -67,10 +76,6 @@ const CardList = styled.ul`
   width: 100%;
   margin: 0 auto;
   justify-items: center;
-`;
-const InfinityBox = styled.div`
-  display: flex;
-  justify-content: center;
 `;
 
 export default CardLists;

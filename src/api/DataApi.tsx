@@ -6,6 +6,7 @@ const remote = axios.create({
 });
 
 export interface PokemonListApiType {
+  count: number;
   next: string;
   results: {
     name: string;

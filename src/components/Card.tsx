@@ -18,7 +18,7 @@ interface DetailProps {
   weight: number;
 }
 interface NameColorProps {
-  bgColor?: string;
+  bgcolor?: string;
 }
 
 const Card = ({ pokemon }: CardProps) => {
@@ -34,7 +34,7 @@ const Card = ({ pokemon }: CardProps) => {
     <>
       <Box>
         <Top>
-          <Name bgColor={pokemonInfo?.color}>{pokemonInfo?.koreanName}</Name>
+          <Name bgcolor={pokemonInfo?.color}>{pokemonInfo?.koreanName}</Name>
           <Number>{String(pokemonInfo?.id).padStart(3, "0")}</Number>
         </Top>
         <Body>
@@ -64,7 +64,7 @@ const Top = styled.div`
   justify-content: space-between;
 `;
 const Name = styled.span<NameColorProps>`
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.bgcolor};
   color: white;
   padding: 3px 10px;
   border-radius: 25px;
