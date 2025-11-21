@@ -3,12 +3,14 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { detailApi } from "../api/DataApi";
 import { FaQuestion } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 
 interface DetailProps {
   color: string;
   height: number;
   id: number;
-  image: string;
+  sprites: { front_default: string; front_shiny: string; back_default: string };
   koreanName: string;
   type: string[];
   weight: number;
@@ -23,6 +25,9 @@ type Stat = {
 const CardDetail = () => {
   const { name } = useParams();
   const [detailData, setDetailData] = useState<DetailProps>();
+  const imageType = useSelector(
+    (state: RootState) => state.imageType.selectedType
+  );
 
   // const name = undefined;
   if (!name) {
@@ -41,12 +46,14 @@ const CardDetail = () => {
     };
     getData();
   }, [name]);
-  console.log(detailData);
 
   return (
     <>
       <Box>
-        <Img src={detailData?.image} alt={detailData?.image}></Img>
+        <Img
+          src={detailData?.sprites[imageType]}
+          alt={detailData?.koreanName}
+        ></Img>
 
         <InfoBox>
           <h2>기본정보</h2>

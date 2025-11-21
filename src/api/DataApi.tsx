@@ -39,7 +39,7 @@ export interface DetailType {
   sprites: {
     front_default: string;
     front_shiny: string;
-    back_shiny: string;
+    back_default: string;
   };
   stats: StatItemType[];
   color: {
@@ -72,7 +72,7 @@ export const detailApi = async (name: string) => {
 
   const { id, height, weight } = getData.data;
   const { name: color } = getSpecies.data.color;
-  const { front_default: image } = getData.data.sprites;
+  const { front_default, front_shiny, back_default } = getData.data.sprites;
   const type = getData.data.types.map((item) => item.type.name);
   const statInfo = getData.data.stats.map((name) => {
     return {
@@ -80,6 +80,11 @@ export const detailApi = async (name: string) => {
       value: name.base_stat,
     };
   });
+  const sprites = {
+    front_default,
+    front_shiny,
+    back_default,
+  };
 
   return {
     id,
@@ -87,7 +92,7 @@ export const detailApi = async (name: string) => {
     weight,
     color,
     type,
-    image,
+    sprites,
     koreanName,
     statInfo,
   };

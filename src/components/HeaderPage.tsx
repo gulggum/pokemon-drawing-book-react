@@ -1,5 +1,42 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { POKEMON_IMAGE_TYPE } from "../constants/imageStringType";
+import { useAppDispatch, type RootState } from "../store/store";
+import { useSelector } from "react-redux";
+import { selectType, type PokemonImageKeyType } from "../store/imageTypeSlice";
+import type { ChangeEvent } from "react";
+
+const HeaderPage = () => {
+  const imageType = useSelector(
+    (state: RootState) => state.imageType.selectedType
+  );
+  const dispatch = useAppDispatch();
+
+  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(selectType(e.target.value as PokemonImageKeyType));
+  };
+
+  return (
+    <>
+      <Header>
+        <Link to={"/"}>
+          {" "}
+          <Title>Pokemon</Title>
+        </Link>
+
+        <Option>
+          {" "}
+          <Button>Dark</Button>
+          <Select value={imageType} onChange={onSelectChange}>
+            <option value={POKEMON_IMAGE_TYPE.FRONT_DEFAULT}>앞모습</option>
+            <option value={POKEMON_IMAGE_TYPE.BACK_DEFAULT}>뒷모습</option>
+            <option value={POKEMON_IMAGE_TYPE.FRONT_SHINY}>샤이니</option>
+          </Select>
+        </Option>
+      </Header>
+    </>
+  );
+};
 
 const Header = styled.div`
   border-bottom: solid 2px gainsboro;
@@ -33,27 +70,5 @@ const Button = styled.button`
     color: white;
   }
 `;
-
-const HeaderPage = () => {
-  return (
-    <>
-      <Header>
-        <Link to={"/"}>
-          {" "}
-          <Title>Pokemon</Title>
-        </Link>
-
-        <Option>
-          {" "}
-          <Button>Dark</Button>
-          <Select>
-            <option>타입</option>
-            <option>속성</option>
-          </Select>
-        </Option>
-      </Header>
-    </>
-  );
-};
 
 export default HeaderPage;

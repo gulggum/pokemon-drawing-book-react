@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { detailApi } from "../api/DataApi";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 
 interface CardProps {
   pokemon: {
@@ -12,7 +14,7 @@ interface DetailProps {
   color: string;
   height: number;
   id: number;
-  image: string;
+  sprites: { front_default: string; front_shiny: string; back_default: string };
   koreanName: string;
   type: string[];
   weight: number;
@@ -23,6 +25,9 @@ interface NameColorProps {
 
 const Card = ({ pokemon }: CardProps) => {
   const [pokemonInfo, setPokemonInfo] = useState<DetailProps>();
+  const imageType = useSelector(
+    (state: RootState) => state.imageType.selectedType
+  );
   useEffect(() => {
     const getDetailData = async () => {
       const result = await detailApi(pokemon.name);
@@ -38,7 +43,10 @@ const Card = ({ pokemon }: CardProps) => {
           <Number>{String(pokemonInfo?.id).padStart(3, "0")}</Number>
         </Top>
         <Body>
-          <Img src={pokemonInfo?.image} alt={pokemonInfo?.koreanName} />
+          <Img
+            src={pokemonInfo?.sprites[imageType]}
+            alt={pokemonInfo?.koreanName}
+          />
         </Body>
         <Bottom>
           <div></div>
