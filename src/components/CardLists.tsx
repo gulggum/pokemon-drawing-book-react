@@ -1,52 +1,30 @@
 import styled from "styled-components";
 import Card from "./Card";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { type PokemonListApiType, dataListApi } from "../api/DataApi";
+import { data, Link } from "react-router-dom";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { useAppDispatch, type RootState } from "../store/store";
+import { useSelector } from "react-redux";
+import { fetchPokemon } from "../store/pokemonSlice";
 
 const CardLists = () => {
-  const [loading, setLoading] = useState(true);
-  const [pokemons, setPokemons] = useState<PokemonListApiType>({
-    count: 0,
-    next: "",
-    results: [],
-  });
-  const [isFetching, setIsFetching] = useState(false); //중복 호출 방지
+  const dispatch = useAppDispatch();
+  const { pokemons, loading } = useSelector(
+    (state: RootState) => state.pokemon
+  );
   const { ref, inView } = useInView({
     threshold: 0,
-  });
+  }); // ref달린 요소가 화면에 보일때 inview === true(useEffect실행됨)
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      if (isFetching) return; // 이미 fetch 중이면 건너뜀
-      setIsFetching(true);
-      const result = await dataListApi(); //기본 20개 랜더링
-      setPokemons(result);
-      setLoading(false);
-      setIsFetching(false);
-    };
-    fetchData();
+    dispatch(fetchPokemon(""));
   }, []);
 
   useEffect(() => {
-    const loadMore = async () => {
-      if (!pokemons.next || isFetching) return;
-      setIsFetching(true);
-      const morePokemons = await dataListApi(pokemons.next);
-      setPokemons({
-        ...pokemons,
-        next: morePokemons.next,
-        results: [...pokemons.results, ...morePokemons.results], //기존 + 새 데이터
-      });
-      setIsFetching(false);
-    };
-    if (inView) {
-      loadMore();
+    if (!loading && inView && pokemons.next) {
+      dispatch(fetchPokemon(pokemons.next)); // 다음 데이터
     }
   }, [inView]);
-
   return (
     <>
       {loading ? (

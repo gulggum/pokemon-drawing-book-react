@@ -9,3 +9,8 @@
 - react-icon 사용
 - react-intersection-observer를 사용해 무한스크롤 구현
 - redux reducer를 활용한 전역 상태 관리로 포켓몬 이미지 타입 선택 버튼 구현
+- Redux Toolkit(createSlice + createAsyncThunk)을 사용하여 전역 상태로 관리하도록 구조 재정비
+  - createSlice로 pokemon 상태(pokemons, loading) 생성
+  - createAsyncThunk로 비동기 API 호출(fetchPokemon) 정의
+  - configureStore를 통해 전역 store 구성
+  - 컴포넌트에서는 dispatch(fetchPokemon())만 호출하도록 간단화
