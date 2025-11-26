@@ -1,18 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { pokemonReducer } from "./pokemonSlice";
 import { imageTypeReducer } from "./imageTypeSlice";
 import { useDispatch } from "react-redux";
-import { pokemonReducer } from "./pokemonSlice";
 
+//스토어 생성
 export const store = configureStore({
   reducer: {
+    pokemons: pokemonReducer,
     imageType: imageTypeReducer,
-    pokemon: pokemonReducer,
   },
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+// TypeScript용 타입 유틸
+export type RootState = ReturnType<typeof store.getState>;
+// RootState: store의 전체 state 타입
+// useSelector 쓸 때 state 타입 추론 가능
+
+export type AppDispatch = typeof store.dispatch;
+// AppDispatch: store의 dispatch 타입
+// useDispatch<AppDispatch> 쓸 때 자동으로 thunk 액션 타입까지 추론 가능

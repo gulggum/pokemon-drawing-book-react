@@ -85,7 +85,7 @@ const CardDetail = () => {
           <AbilityValue>
             {detailData?.statInfo.map((stat) => (
               <Li>
-                <Span key={detailData.id}>{stat.name}</Span>
+                <Span>{stat.name}</Span>
                 <Span>{stat.value}</Span>
               </Li>
             ))}

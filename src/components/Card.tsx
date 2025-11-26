@@ -35,6 +35,7 @@ const Card = ({ pokemon }: CardProps) => {
     };
     getDetailData();
   }, [pokemon.name]);
+
   return (
     <>
       <Box>

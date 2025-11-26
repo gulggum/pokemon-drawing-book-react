@@ -1,65 +1,56 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  type PayloadAction,
-} from "@reduxjs/toolkit";
-import { type PokemonListApiType } from "../api/DataApi";
-import axios from "axios";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { dataListApi, type PokemonListApiType } from "../api/DataApi";
 
-// First, create the thunk
-export const fetchPokemon = createAsyncThunk(
-  "pokemon/fetch",
-  async (nextUrl?: string) => {
-    const url = nextUrl || "https://pokeapi.co/api/v2/pokemon";
-    const response = await axios.get(url);
-    return response.data;
+// Thunk액션 dispatch()할때 필요 // 액션 자체를 export
+export const fetchPokemons = createAsyncThunk(
+  "pokemon/fetchPokemons", //slice 이름/액션 구분용
+  async (url: string | undefined) => {
+    const response = await dataListApi(url); //실제 api호출
+    return response; //fulfilled 액션 payload로 전달됨
   }
 );
 
+//slice 타입정의
 interface PokemonState {
-  pokemons: PokemonListApiType;
-  loading: boolean;
+  loading: boolean; //api 요청 중이면 true
+  error: string | null; // 에러 메시지 저장
+  data: PokemonListApiType; //실제 api결과 저장
 }
 
-const initialState = {
-  pokemons: {
-    count: 0,
-    next: "",
-    results: [],
-  },
+//초기상태
+const initialState: PokemonState = {
   loading: false,
-} as PokemonState;
+  error: null,
+  data: {
+    count: 0,
+    next: "", //다음 페이지 url
+    results: [], //포켓몬 배열리스트
+  },
+};
 
 // Then, handle actions in your reducers:
-const PokemonSlice = createSlice({
+export const pokemonSlice = createSlice({
   name: "pokemon",
   initialState,
-  reducers: {},
+  reducers: {}, //동기 액션 정의
   extraReducers: (builder) => {
-    // Add reducers for additional action types here, and handle loading state as needed
     builder
-      .addCase(fetchPokemon.pending, (state) => {
+      //pending : api호출시작
+      .addCase(fetchPokemons.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
-      .addCase(
-        fetchPokemon.fulfilled,
-        (state, action: PayloadAction<PokemonListApiType>) => {
-          state.loading = false;
-          //중복방지: 이미 있는 포켓몬 이름은 append안함
-          const newResults = action.payload.results.filter(
-            (p) => !state.pokemons.results.some((r) => r.name === p.name)
-          );
-          state.pokemons = {
-            count: action.payload.count,
-            next: action.payload.next,
-            results: [...state.pokemons.results, ...newResults],
-          };
-        }
-      )
-      .addCase(fetchPokemon.rejected, (state) => {
+      //fulfilled: api호출 성공
+      .addCase(fetchPokemons.fulfilled, (state, action) => {
         state.loading = false;
+        state.data = action.payload;
+      })
+      //rejected:api 호출실패
+      .addCase(fetchPokemons.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "데이터를 불러오지 못했습니다.";
       });
   },
 });
 
-export const pokemonReducer = PokemonSlice.reducer;
+export const pokemonReducer = pokemonSlice.reducer;
