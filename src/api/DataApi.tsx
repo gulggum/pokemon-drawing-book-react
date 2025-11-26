@@ -27,6 +27,8 @@ export const dataListApi = async (nextUrl?: string) => {
 };
 
 export interface DetailType {
+  statInfo: any;
+  type: any;
   id: number;
   height: number;
   weight: number;

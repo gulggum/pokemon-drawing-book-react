@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { pokemonReducer } from "./pokemonSlice";
 import { imageTypeReducer } from "./imageTypeSlice";
 import { useDispatch } from "react-redux";
+import { pokemonDetailReducer } from "./detailSlice";
 
 //스토어 생성
 export const store = configureStore({
   reducer: {
     pokemons: pokemonReducer,
     imageType: imageTypeReducer,
+    detail: pokemonDetailReducer,
   },
 });
 

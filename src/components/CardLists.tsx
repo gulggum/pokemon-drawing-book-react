@@ -16,7 +16,7 @@ const CardLists = () => {
   return (
     <>
       {loading ? (
-        "loading..."
+        "포켓몬들을 불러오는중...."
       ) : (
         <>
           <CardList>

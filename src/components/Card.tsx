@@ -3,6 +3,7 @@ import { detailApi } from "../api/DataApi";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
+import { FaQuestion } from "react-icons/fa";
 
 interface CardProps {
   pokemon: {
@@ -36,24 +37,31 @@ const Card = ({ pokemon }: CardProps) => {
     getDetailData();
   }, [pokemon.name]);
 
+  if (!pokemon) return <p>로딩중!!!!!!!</p>;
   return (
     <>
-      <Box>
-        <Top>
-          <Name bgcolor={pokemonInfo?.color}>{pokemonInfo?.koreanName}</Name>
-          <Number>{String(pokemonInfo?.id).padStart(3, "0")}</Number>
-        </Top>
-        <Body>
-          <Img
-            src={pokemonInfo?.sprites[imageType]}
-            alt={pokemonInfo?.koreanName}
-          />
-        </Body>
-        <Bottom>
-          <div></div>
-          <Company>Pokemon`</Company>
-        </Bottom>
-      </Box>
+      {!pokemonInfo ? (
+        <Box>
+          <StyledQuestion />
+        </Box>
+      ) : (
+        <Box>
+          <Top>
+            <Name bgcolor={pokemonInfo?.color}>{pokemonInfo?.koreanName}</Name>
+            <Number>{String(pokemonInfo?.id).padStart(3, "0")}</Number>
+          </Top>
+          <Body>
+            <Img
+              src={pokemonInfo?.sprites[imageType]}
+              alt={pokemonInfo?.koreanName}
+            />
+          </Body>
+          <Bottom>
+            <div></div>
+            <Company>Pokemon`</Company>
+          </Bottom>
+        </Box>
+      )}
     </>
   );
 };
@@ -101,6 +109,11 @@ const Company = styled.span`
   border-radius: 25px;
   font-size: 0.8rem;
   border: 1px solid gainsboro;
+`;
+const StyledQuestion = styled(FaQuestion)`
+  width: 100%;
+  height: 100%;
+  color: #f1cf46;
 `;
 
 export default Card;

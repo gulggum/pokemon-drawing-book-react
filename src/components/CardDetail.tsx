@@ -1,35 +1,31 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { detailApi } from "../api/DataApi";
+import {
+  useEffect,
+  type JSXElementConstructor,
+  type ReactElement,
+  type ReactNode,
+  type ReactPortal,
+} from "react";
 import { FaQuestion } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import type { RootState } from "../store/store";
-
-interface DetailProps {
-  color: string;
-  height: number;
-  id: number;
-  sprites: { front_default: string; front_shiny: string; back_default: string };
-  koreanName: string;
-  type: string[];
-  weight: number;
-  statInfo: Stat[];
-}
-
-type Stat = {
-  name: string;
-  value: number;
-};
+import { useAppDispatch, type RootState } from "../store/store";
+import {
+  clearDetail,
+  fetchPokemonDetail,
+  type PokemonDetailState,
+} from "../store/detailSlice";
 
 const CardDetail = () => {
   const { name } = useParams();
-  const [detailData, setDetailData] = useState<DetailProps>();
+  const dispatch = useAppDispatch();
+  const { data, loading, error } = useSelector(
+    (state: RootState) => state.detail as PokemonDetailState
+  );
   const imageType = useSelector(
     (state: RootState) => state.imageType.selectedType
   );
 
-  // const name = undefined;
   if (!name) {
     return (
       <>
@@ -40,55 +36,105 @@ const CardDetail = () => {
     );
   }
   useEffect(() => {
-    const getData = async () => {
-      const result = await detailApi(name);
-      setDetailData(result);
-    };
-    getData();
-  }, [name]);
+    if (name) dispatch(fetchPokemonDetail(name));
 
+    return () => {
+      dispatch(clearDetail());
+    };
+  }, [name, dispatch]);
+  if (loading) return <p>Loading...</p>;
+  if (!data) return "데이터없음!";
+  if (error) return <h1>{error}</h1>;
   return (
     <>
       <Box>
-        <Img
-          src={detailData?.sprites[imageType]}
-          alt={detailData?.koreanName}
-        ></Img>
+        <Img src={data?.sprites[imageType]} alt={data?.koreanName}></Img>
 
         <InfoBox>
           <h2>기본정보</h2>
           <Info>
             <Li>
               <Span>번호</Span>
-              <Span>{detailData?.id}</Span>
+              <Span>{data?.id}</Span>
             </Li>
             <Li>
               <Span>이름</Span>
-              <Span>{detailData?.koreanName}</Span>
+              <Span>{data?.koreanName}</Span>
             </Li>{" "}
             <Li>
               <Span>타입</Span>
               <Span>
-                <span>{detailData?.type.join(" ,")}</span>
+                <span>{data?.type.join(" ,")}</span>
               </Span>
             </Li>
             <Li>
               <Span>키</Span>
-              {detailData && <Span>{detailData.height / 10}m</Span>}
+              {data && <Span>{data.height / 10}m</Span>}
             </Li>
             <Li>
               <Span>몸무게</Span>
-              {detailData && <Span>{detailData.weight / 10}kg</Span>}
+              {data && <Span>{data.weight / 10}kg</Span>}
             </Li>
           </Info>
           <h2>능력치</h2>
           <AbilityValue>
-            {detailData?.statInfo.map((stat) => (
-              <Li>
-                <Span>{stat.name}</Span>
-                <Span>{stat.value}</Span>
-              </Li>
-            ))}
+            {data?.statInfo.map(
+              (stat: {
+                name:
+                  | string
+                  | number
+                  | bigint
+                  | boolean
+                  | ReactElement<unknown, string | JSXElementConstructor<any>>
+                  | Iterable<ReactNode>
+                  | ReactPortal
+                  | Promise<
+                      | string
+                      | number
+                      | bigint
+                      | boolean
+                      | ReactPortal
+                      | ReactElement<
+                          unknown,
+                          string | JSXElementConstructor<any>
+                        >
+                      | Iterable<ReactNode>
+                      | null
+                      | undefined
+                    >
+                  | null
+                  | undefined;
+                value:
+                  | string
+                  | number
+                  | bigint
+                  | boolean
+                  | ReactElement<unknown, string | JSXElementConstructor<any>>
+                  | Iterable<ReactNode>
+                  | ReactPortal
+                  | Promise<
+                      | string
+                      | number
+                      | bigint
+                      | boolean
+                      | ReactPortal
+                      | ReactElement<
+                          unknown,
+                          string | JSXElementConstructor<any>
+                        >
+                      | Iterable<ReactNode>
+                      | null
+                      | undefined
+                    >
+                  | null
+                  | undefined;
+              }) => (
+                <Li>
+                  <Span>{stat.name}</Span>
+                  <Span>{stat.value}</Span>
+                </Li>
+              )
+            )}
           </AbilityValue>
 
           <Footer>
