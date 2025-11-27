@@ -6,10 +6,16 @@ import { POKEMON_IMAGE_TYPE } from "../constants/imageStringType";
 import { useAppDispatch, type RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import { selectType, type PokemonImageKeyType } from "../store/imageTypeSlice";
-import type { ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 import { toggleTheme } from "../store/themeSlice";
+import SearchBar from "./SearchBar";
 
-const HeaderPage = () => {
+interface HeaderPageProps {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const HeaderPage = ({ search, setSearch }: HeaderPageProps) => {
   const imageType = useSelector(
     (state: RootState) => state.imageType.selectedType
   );
@@ -31,7 +37,7 @@ const HeaderPage = () => {
             Pokémon
           </Title>
         </Link>
-
+        <SearchBar search={search} setSearch={setSearch} />
         <Menu>
           {" "}
           <Button onClick={() => dispatch(toggleTheme())}>

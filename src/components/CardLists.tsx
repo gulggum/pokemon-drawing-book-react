@@ -7,7 +7,11 @@ import type { AppDispatch, RootState } from "../store/store";
 import { fetchPokemons } from "../store/pokemonSlice";
 import { useInView } from "react-intersection-observer";
 
-const CardLists = () => {
+interface CardListProps {
+  search: string;
+}
+
+const CardLists = ({ search }: CardListProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { data, loading } = useSelector((state: RootState) => state.pokemons);
   const { ref, inView } = useInView({
@@ -23,6 +27,10 @@ const CardLists = () => {
     if (inView && data.next) dispatch(fetchPokemons(data.next));
   }, [inView, dispatch, data.next]);
 
+  const filteredResults = data.results.filter((pokemon) =>
+    pokemon.koreanName.includes(search)
+  );
+
   return (
     <>
       {data.results.length === 0 && loading ? (
@@ -30,7 +38,7 @@ const CardLists = () => {
       ) : (
         <>
           <CardList>
-            {data.results.map((pokemon, index) => (
+            {filteredResults.map((pokemon, index) => (
               <Link to={`/pokemon/${pokemon.name}`}>
                 <li
                   key={pokemon.name}
