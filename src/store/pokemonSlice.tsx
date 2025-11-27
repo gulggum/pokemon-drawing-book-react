@@ -4,8 +4,8 @@ import { dataListApi, type PokemonListApiType } from "../api/DataApi";
 // Thunk액션 dispatch()할때 필요 // 액션 자체를 export
 export const fetchPokemons = createAsyncThunk(
   "pokemon/fetchPokemons", //slice 이름/액션 구분용
-  async (url: string | undefined) => {
-    const response = await dataListApi(url); //실제 api호출
+  async (nextUrl?: string) => {
+    const response = await dataListApi(nextUrl); //실제 api호출
     return response; //fulfilled 액션 payload로 전달됨
   }
 );
@@ -43,7 +43,13 @@ export const pokemonSlice = createSlice({
       //fulfilled: api호출 성공
       .addCase(fetchPokemons.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+
+        //무한스크롤=>기존 results+새 results누적
+        state.data.results = [...state.data.results, ...action.payload.results];
+        state.data.next = action.payload.next;
+
+        //count는 처음 값 그대로 유지 or 업데이트
+        state.data.count = action.payload.count;
       })
       //rejected:api 호출실패
       .addCase(fetchPokemons.rejected, (state, action) => {

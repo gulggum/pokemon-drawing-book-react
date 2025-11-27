@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FaQuestion } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import {
   useEffect,
@@ -7,7 +8,6 @@ import {
   type ReactNode,
   type ReactPortal,
 } from "react";
-import { FaQuestion } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useAppDispatch, type RootState } from "../store/store";
 import {
@@ -25,12 +25,11 @@ const CardDetail = () => {
   const imageType = useSelector(
     (state: RootState) => state.imageType.selectedType
   );
-
   if (!name) {
     return (
       <>
         <Box>
-          <StyleQuestion />
+          <StyledQuestion />
         </Box>
       </>
     );
@@ -42,14 +41,18 @@ const CardDetail = () => {
       dispatch(clearDetail());
     };
   }, [name, dispatch]);
-  if (loading) return <p>Loading...</p>;
-  if (!data) return "데이터없음!";
+  if (loading) return <h2>포켓몬을 불러오는 중입니다..</h2>;
+  if (!data)
+    return (
+      <Box>
+        <StyledQuestion />
+      </Box>
+    );
   if (error) return <h1>{error}</h1>;
   return (
     <>
       <Box>
         <Img src={data?.sprites[imageType]} alt={data?.koreanName}></Img>
-
         <InfoBox>
           <h2>기본정보</h2>
           <Info>
@@ -150,16 +153,18 @@ const Box = styled.div`
   width: 100%;
   margin-top: 1rem;
   padding: 1rem 0 1rem 0;
-  border: 1px solid gainsboro;
+  /* border: 1px solid gainsboro; */
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 `;
 
 const Img = styled.img`
   width: 50%;
   margin: 0 auto;
-  border-bottom: 1px solid gainsboro;
 `;
 
 const InfoBox = styled.div`
@@ -203,12 +208,10 @@ const Company = styled.span`
   border-radius: 25px;
   font-size: 0.8rem;
 `;
-const StyleQuestion = styled(FaQuestion)`
-  font-size: 10rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #eece26;
+const StyledQuestion = styled(FaQuestion)`
+  width: 100%;
+  height: 100%;
+  color: #f1cf46;
 `;
+
 export default CardDetail;

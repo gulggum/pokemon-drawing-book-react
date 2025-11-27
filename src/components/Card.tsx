@@ -37,7 +37,12 @@ const Card = ({ pokemon }: CardProps) => {
     getDetailData();
   }, [pokemon.name]);
 
-  if (!pokemon) return <p>로딩중!!!!!!!</p>;
+  if (!pokemon)
+    return (
+      <Box>
+        <StyledQuestion />
+      </Box>
+    );
   return (
     <>
       {!pokemonInfo ? (
@@ -58,7 +63,7 @@ const Card = ({ pokemon }: CardProps) => {
           </Body>
           <Bottom>
             <div></div>
-            <Company>Pokemon`</Company>
+            <Company>Pokémon</Company>
           </Bottom>
         </Box>
       )}
@@ -70,11 +75,16 @@ const Box = styled.div`
   width: 200px;
   height: 240px;
   padding: 1rem;
-  border: 1px solid gainsboro;
+  /* border: 1px solid gainsboro; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  &:hover {
+    scale: 1.01;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
 `;
 const Top = styled.div`
   display: flex;
@@ -82,16 +92,21 @@ const Top = styled.div`
 `;
 const Name = styled.span<NameColorProps>`
   background-color: ${(props) => props.bgcolor};
-  color: white;
+  color: ${({ bgcolor }) => (bgcolor === "white" ? "black" : "white")};
   padding: 3px 10px;
-  border-radius: 25px;
+  border-radius: 30px;
   font-size: 0.8rem;
+  font-weight: 500;
+  margin-right: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 const Number = styled.span`
   padding: 3px 10px;
   border-radius: 10px;
   font-size: 0.8rem;
-  border: 1px solid gainsboro;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 
 const Body = styled.div`
@@ -108,12 +123,14 @@ const Company = styled.span`
   padding: 3px 10px;
   border-radius: 25px;
   font-size: 0.8rem;
-  border: 1px solid gainsboro;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 const StyledQuestion = styled(FaQuestion)`
-  width: 100%;
+  width: 40%;
   height: 100%;
   color: #f1cf46;
+  margin: 0 auto;
 `;
 
 export default Card;
