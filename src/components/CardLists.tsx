@@ -55,6 +55,7 @@ const CardList = styled.ul`
   width: 100%;
   margin: 0 auto;
   justify-items: center;
+  margin-top: 90px;
 `;
 
 export default CardLists;

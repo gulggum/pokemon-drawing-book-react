@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HeaderPage from "./components/HeaderPage";
-import { createGlobalStyle, styled } from "styled-components";
+import { createGlobalStyle, styled, ThemeProvider } from "styled-components";
 import CardLists from "./components/CardLists";
 import CardDetail from "./components/CardDetail";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
+import { useSelector } from "react-redux";
+import { type RootState } from "./store/store";
+import { darkTheme, lightTheme } from "./constants/theme";
 
 const GlobalStyle = createGlobalStyle`
 a{
@@ -14,6 +15,10 @@ a{
 ul{
   list-style: none;
 }
+body{
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.text};
+}
 `;
 const Container = styled.div`
   max-width: 800px;
@@ -22,10 +27,11 @@ const Container = styled.div`
 `;
 
 function App() {
+  const themeMode = useSelector((state: RootState) => state.theme.mode);
   return (
     <>
-      <GlobalStyle />
-      <Provider store={store}>
+      <ThemeProvider theme={themeMode === "light" ? lightTheme : darkTheme}>
+        <GlobalStyle />
         <BrowserRouter>
           <Container>
             <HeaderPage />
@@ -35,7 +41,7 @@ function App() {
             </Routes>
           </Container>
         </BrowserRouter>
-      </Provider>
+      </ThemeProvider>
     </>
   );
 }

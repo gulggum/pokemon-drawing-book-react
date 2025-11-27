@@ -7,30 +7,26 @@ import { useAppDispatch, type RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import { selectType, type PokemonImageKeyType } from "../store/imageTypeSlice";
 import type { ChangeEvent } from "react";
+import { toggleTheme } from "../store/themeSlice";
 
 const HeaderPage = () => {
   const imageType = useSelector(
     (state: RootState) => state.imageType.selectedType
   );
   const dispatch = useAppDispatch();
-
   const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(selectType(e.target.value as PokemonImageKeyType));
   };
+  const theme = useSelector((state: RootState) => state.theme.mode);
 
   return (
     <>
       <Header>
         <Link to={"/"}>
           <Title>
-            <img
-              src="https://dthezntil550i.cloudfront.net/4w/latest/4w1609281705039430001177247/ef802f2f-0e78-4a5d-9777-52f1f5ae746c.png"
+            <LogoImg
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/2052px-Pok%C3%A9_Ball_icon.svg.png"
               alt="logo"
-              style={{
-                width: "40px",
-                marginTop: "5px",
-                marginRight: "5px",
-              }}
             />
             Pokémon
           </Title>
@@ -38,7 +34,13 @@ const HeaderPage = () => {
 
         <Menu>
           {" "}
-          <Button>Dark</Button>
+          <Button onClick={() => dispatch(toggleTheme())}>
+            {theme === "light" ? (
+              <IoIosSunny style={{ fontSize: "30px" }} />
+            ) : (
+              <FaRegMoon />
+            )}
+          </Button>
           <Select value={imageType} onChange={onSelectChange}>
             <Option value={POKEMON_IMAGE_TYPE.FRONT_DEFAULT}>앞모습</Option>
             <Option value={POKEMON_IMAGE_TYPE.BACK_DEFAULT}>뒷모습</Option>
@@ -51,11 +53,19 @@ const HeaderPage = () => {
 };
 
 const Header = styled.div`
-  border-bottom: solid 2px gainsboro;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 0;
+  padding: 1rem;
+  color: ${(props) => props.theme.text};
+  background-color: ${(props) => props.theme.bgColor};
+  border-bottom: solid 2px gainsboro;
 `;
 const Title = styled.div`
   display: flex;
@@ -66,7 +76,17 @@ const Title = styled.div`
     color: #ff0000;
   }
 `;
-const Menu = styled.div``;
+const LogoImg = styled.img`
+  width: 40px;
+  margin-top: 5px;
+  margin-right: 5px;
+`;
+const Menu = styled.div`
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+`;
 
 const Select = styled.select`
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -77,18 +97,13 @@ const Select = styled.select`
   border-radius: 15px;
 `;
 const Option = styled.option``;
+
 const Button = styled.button`
-  margin-right: 10px;
   border: none;
-  padding: 10px 15px;
-  border-radius: 20px;
-  font-weight: 800;
+  padding: 5px 8px;
+  border-radius: 50%;
   font-size: 15px;
   cursor: pointer;
-  &:hover {
-    background-color: black;
-    color: white;
-  }
 `;
 
 export default HeaderPage;

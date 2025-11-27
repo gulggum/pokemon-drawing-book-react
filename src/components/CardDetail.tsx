@@ -157,9 +157,11 @@ const Box = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  border: 1px solid ${(props) => props.theme.border};
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
     rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
     rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+  margin-top: 100px;
 `;
 
 const Img = styled.img`
@@ -194,7 +196,7 @@ const Li = styled.li`
   margin-left: 1rem;
   padding-bottom: 8px;
   padding-top: 10px;
-  border-bottom: 1px solid gainsboro;
+  border-bottom: 1px solid ${(props) => props.theme.underLine};
 `;
 const Span = styled.span``;
 

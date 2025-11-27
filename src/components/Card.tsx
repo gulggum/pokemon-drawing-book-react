@@ -75,7 +75,7 @@ const Box = styled.div`
   width: 200px;
   height: 240px;
   padding: 1rem;
-  /* border: 1px solid gainsboro; */
+  border: 1px solid ${(props) => props.theme.border};
   display: flex;
   flex-direction: column;
   justify-content: space-between;

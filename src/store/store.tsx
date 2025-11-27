@@ -3,6 +3,7 @@ import { pokemonReducer } from "./pokemonSlice";
 import { imageTypeReducer } from "./imageTypeSlice";
 import { useDispatch } from "react-redux";
 import { pokemonDetailReducer } from "./detailSlice";
+import { themeReducer } from "./themeSlice";
 
 //스토어 생성
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     pokemons: pokemonReducer,
     imageType: imageTypeReducer,
     detail: pokemonDetailReducer,
+    theme: themeReducer,
   },
 });
 
