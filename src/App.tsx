@@ -6,10 +6,8 @@ import CardDetail from "./components/CardDetail";
 import { useSelector } from "react-redux";
 import { type RootState } from "./store/store";
 import { darkTheme, lightTheme } from "./constants/theme";
-import { useState } from "react";
 
 function App() {
-  const [search, setSearch] = useState(""); //검색어 상태(최상위부모)
   const themeMode = useSelector((state: RootState) => state.theme.mode);
   return (
     <>
@@ -17,9 +15,9 @@ function App() {
         <GlobalStyle />
         <BrowserRouter>
           <Container>
-            <HeaderPage search={search} setSearch={setSearch} />
+            <HeaderPage />
             <Routes>
-              <Route path="/" element={<CardLists search={search} />} />
+              <Route path="/" element={<CardLists />} />
               <Route path="/pokemon/:name" element={<CardDetail />} />
             </Routes>
           </Container>

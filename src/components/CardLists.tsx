@@ -1,17 +1,13 @@
 import styled from "styled-components";
 import Card from "./Card";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
 import { fetchPokemons } from "../store/pokemonSlice";
 import { useInView } from "react-intersection-observer";
 
-interface CardListProps {
-  search: string;
-}
-
-const CardLists = ({ search }: CardListProps) => {
+const CardLists = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { data, loading } = useSelector((state: RootState) => state.pokemons);
   const { ref, inView } = useInView({
@@ -27,10 +23,6 @@ const CardLists = ({ search }: CardListProps) => {
     if (inView && data.next) dispatch(fetchPokemons(data.next));
   }, [inView, dispatch, data.next]);
 
-  const filteredResults = data.results.filter((pokemon) =>
-    pokemon.koreanName.includes(search)
-  );
-
   return (
     <>
       {data.results.length === 0 && loading ? (
@@ -38,7 +30,7 @@ const CardLists = ({ search }: CardListProps) => {
       ) : (
         <>
           <CardList>
-            {filteredResults.map((pokemon, index) => (
+            {data.results.map((pokemon, index) => (
               <Link to={`/pokemon/${pokemon.name}`}>
                 <li
                   key={pokemon.name}

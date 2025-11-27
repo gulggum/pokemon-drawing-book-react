@@ -5,17 +5,10 @@ const remote = axios.create({
   timeout: 2000,
 });
 
-export interface PokemonListItem {
-  name: string;
-  url: string;
-  koreanName: string;
-  id: number;
-}
-
 export interface PokemonListApiType {
   count: number;
   next: string;
-  results: PokemonListItem[];
+  results: { name: string; url: string }[];
 }
 
 export const dataListApi = async (nextUrl?: string) => {
@@ -23,26 +16,7 @@ export const dataListApi = async (nextUrl?: string) => {
     const requestUrl = nextUrl ?? "https://pokeapi.co/api/v2/pokemon";
     const getData = await remote.get<PokemonListApiType>(requestUrl);
     const list = getData.data;
-
-    const enrichedResults = await Promise.all(
-      list.results.map(async (pokemon) => {
-        const detail = await detailApi(pokemon.name);
-
-        return {
-          name: pokemon.name,
-          url: pokemon.url,
-          koreanName: detail.koreanName,
-          id: detail.id,
-          color: detail.color, // 쓸거면 추가 가능
-          sprites: detail.sprites, // 필요하면 사용 가능
-        };
-      })
-    );
-
-    return {
-      ...list,
-      results: enrichedResults,
-    };
+    return list;
   } catch (error) {
     console.log(error);
     throw error;
