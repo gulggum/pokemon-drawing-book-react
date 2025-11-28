@@ -28,7 +28,7 @@ const CardLists = () => {
   return (
     <>
       <CardList>
-        {data.results.map((pokemon, index) => (
+        {data.results.map((pokemon) => (
           <Link to={`/pokemon/${pokemon.name}`}>
             <li key={pokemon.name}>
               <Card pokemon={pokemon} />

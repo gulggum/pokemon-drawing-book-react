@@ -3,6 +3,7 @@ export interface Theme {
   text: string;
   border: string;
   underLine: string;
+  detailTitle: string;
 }
 
 export const lightTheme: Theme = {
@@ -10,11 +11,13 @@ export const lightTheme: Theme = {
   text: "black",
   border: "none",
   underLine: "gainsboro",
+  detailTitle: "black",
 };
 
 export const darkTheme: Theme = {
   bgColor: "#121212",
   text: "#E0E0E0",
   border: "#2C2C2C",
-  underLine: "#03DAC6",
+  underLine: "#2C2C2C",
+  detailTitle: "black",
 };

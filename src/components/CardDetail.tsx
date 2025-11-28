@@ -16,6 +16,9 @@ import {
   type PokemonDetailState,
 } from "../store/detailSlice";
 
+interface ColorProps {
+  titlecolor: string;
+}
 const CardDetail = () => {
   const { name } = useParams();
   const dispatch = useAppDispatch();
@@ -52,22 +55,20 @@ const CardDetail = () => {
   return (
     <>
       <Box>
+        <Title titlecolor={data?.color}>
+          <Number>{data?.id}.</Number>
+          <Name>{data?.koreanName}</Name>
+        </Title>
         <Img src={data?.sprites[imageType]} alt={data?.koreanName}></Img>
         <InfoBox>
           <h2>기본정보</h2>
           <Info>
             <Li>
-              <Span>번호</Span>
-              <Span>{data?.id}</Span>
-            </Li>
-            <Li>
-              <Span>이름</Span>
-              <Span>{data?.koreanName}</Span>
-            </Li>{" "}
-            <Li>
               <Span>타입</Span>
               <Span>
-                <span>{data?.type.join(" ,")}</span>
+                <span style={{ width: "140px" }}>
+                  {data?.type.join(" ,  ")}
+                </span>
               </Span>
             </Li>
             <Li>
@@ -142,7 +143,7 @@ const CardDetail = () => {
 
           <Footer>
             <div></div>
-            <Company>Pokemon</Company>
+            <Company>Pokémon</Company>
           </Footer>
         </InfoBox>
       </Box>
@@ -152,7 +153,7 @@ const CardDetail = () => {
 const Box = styled.div`
   width: 100%;
   margin-top: 1rem;
-  padding: 1rem 0 1rem 0;
+  padding: 0rem 0rem 1rem 0;
   /* border: 1px solid gainsboro; */
   border-radius: 10px;
   display: flex;
@@ -163,6 +164,22 @@ const Box = styled.div`
     rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
   margin-top: 100px;
 `;
+const Title = styled.div<ColorProps>`
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 600;
+  padding-left: 1rem;
+  background-color: ${(props) => props.titlecolor};
+  display: flex;
+  color: ${(props) => props.theme.detailTitle};
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+`;
+const Number = styled.span`
+  margin-right: 1rem;
+`;
+const Name = styled.span``;
 
 const Img = styled.img`
   width: 50%;
