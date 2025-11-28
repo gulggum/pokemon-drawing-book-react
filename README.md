@@ -17,3 +17,11 @@
 - 전체 UI는 Styled-Components를 사용하여 컴포넌트 단위로 스타일 관리
   - redux 상태 또는 api데이터에 따라 스타일이 바뀌어야 하는 부분은 props기반 동적 스타일링 적용
 - 다크/라이트모드 구현.
+
+## 시연 이미지
+
+![포켓몬 도감 화면](./src/images/pokemonScreenShot.png)
+
+## 사이트 배포
+
+- [포켓몬 도감 바로가기]

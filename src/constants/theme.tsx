@@ -13,8 +13,8 @@ export const lightTheme: Theme = {
 };
 
 export const darkTheme: Theme = {
-  bgColor: "#1212",
-  text: "#eoeoeo",
-  border: "#03DAC6",
+  bgColor: "#121212",
+  text: "#E0E0E0",
+  border: "#2C2C2C",
   underLine: "#03DAC6",
 };

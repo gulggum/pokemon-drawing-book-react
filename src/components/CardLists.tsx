@@ -30,15 +30,13 @@ const CardLists = () => {
       <CardList>
         {data.results.map((pokemon, index) => (
           <Link to={`/pokemon/${pokemon.name}`}>
-            <li
-              key={pokemon.name}
-              ref={index === data.results.length - 1 ? ref : undefined}
-            >
+            <li key={pokemon.name}>
               <Card pokemon={pokemon} />
             </li>
           </Link>
         ))}
       </CardList>
+      <MoreLoader ref={ref}>포켓몬들을 불러오는중...</MoreLoader>
     </>
   );
 };
@@ -54,4 +52,10 @@ const CardList = styled.ul`
   margin-top: 90px;
 `;
 
+const MoreLoader = styled.div`
+  width: 100%;
+  padding: 2.5rem 0;
+  text-align: center;
+  font-size: 2rem;
+`;
 export default CardLists;
