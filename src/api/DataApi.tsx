@@ -14,6 +14,7 @@ export interface PokemonListApiType {
 export const dataListApi = async (nextUrl?: string) => {
   try {
     const requestUrl = nextUrl ?? "https://pokeapi.co/api/v2/pokemon";
+    console.log(requestUrl);
     const getData = await remote.get<PokemonListApiType>(requestUrl);
     const list = getData.data;
     return list;
@@ -65,7 +66,6 @@ export interface StatItemType {
 export const detailApi = async (name: string) => {
   const getData = await remote.get<DetailType>(`pokemon/${name}`);
   const getSpecies = await remote.get<DetailType>(`pokemon-species/${name}`);
-  console.log(getSpecies);
   const koreanName =
     getSpecies.data.names.find((item) => item.language.name === "ko")?.name ??
     "unknown";

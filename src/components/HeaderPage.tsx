@@ -37,7 +37,7 @@ const HeaderPage = () => {
             {theme === "light" ? (
               <IoIosSunny style={{ fontSize: "30px" }} />
             ) : (
-              <FaRegMoon />
+              <FaRegMoon style={{ fontSize: "25px" }} />
             )}
           </Button>
           <Select value={imageType} onChange={onSelectChange}>
@@ -72,7 +72,7 @@ const Title = styled.div`
   font-weight: 600;
   font-size: 2rem;
   &:hover {
-    color: #ff0000;
+    color: orange;
   }
 `;
 const LogoImg = styled.img`
@@ -101,7 +101,6 @@ const Button = styled.button`
   border: none;
   padding: 5px 8px;
   border-radius: 50%;
-  font-size: 15px;
   cursor: pointer;
 `;
 

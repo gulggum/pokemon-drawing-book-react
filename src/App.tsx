@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import HeaderPage from "./components/HeaderPage";
 import { createGlobalStyle, styled, ThemeProvider } from "styled-components";
 import CardLists from "./components/CardLists";
@@ -13,7 +13,7 @@ function App() {
     <>
       <ThemeProvider theme={themeMode === "light" ? lightTheme : darkTheme}>
         <GlobalStyle />
-        <BrowserRouter>
+        <HashRouter>
           <Container>
             <HeaderPage />
             <Routes>
@@ -21,7 +21,7 @@ function App() {
               <Route path="/pokemon/:name" element={<CardDetail />} />
             </Routes>
           </Container>
-        </BrowserRouter>
+        </HashRouter>
       </ThemeProvider>
     </>
   );

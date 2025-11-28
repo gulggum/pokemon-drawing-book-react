@@ -12,6 +12,7 @@ const CardLists = () => {
   const { data, loading } = useSelector((state: RootState) => state.pokemons);
   const { ref, inView } = useInView({
     threshold: 0,
+    triggerOnce: false,
   });
 
   //처음 랜더링 기본20개 출력
@@ -20,29 +21,24 @@ const CardLists = () => {
   }, [dispatch]);
   //다음페이지 출력
   useEffect(() => {
-    if (inView && data.next) dispatch(fetchPokemons(data.next));
-  }, [inView, dispatch, data.next]);
+    if (!inView || loading || !data.next) return; //중복방지
+    if (inView) dispatch(fetchPokemons(data.next));
+  }, [inView, dispatch]);
 
   return (
     <>
-      {data.results.length === 0 && loading ? (
-        "포켓몬들을 불러오는중...."
-      ) : (
-        <>
-          <CardList>
-            {data.results.map((pokemon, index) => (
-              <Link to={`/pokemon/${pokemon.name}`}>
-                <li
-                  key={pokemon.name}
-                  ref={index === data.results.length - 1 ? ref : undefined}
-                >
-                  <Card pokemon={pokemon} />
-                </li>
-              </Link>
-            ))}
-          </CardList>
-        </>
-      )}
+      <CardList>
+        {data.results.map((pokemon, index) => (
+          <Link to={`/pokemon/${pokemon.name}`}>
+            <li
+              key={pokemon.name}
+              ref={index === data.results.length - 1 ? ref : undefined}
+            >
+              <Card pokemon={pokemon} />
+            </li>
+          </Link>
+        ))}
+      </CardList>
     </>
   );
 };

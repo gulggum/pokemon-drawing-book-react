@@ -32,7 +32,7 @@ const initialState: PokemonState = {
 export const pokemonSlice = createSlice({
   name: "pokemon",
   initialState,
-  reducers: {}, //동기 액션 정의
+  reducers: {},
   extraReducers: (builder) => {
     builder
       //pending : api호출시작
@@ -47,8 +47,6 @@ export const pokemonSlice = createSlice({
         //무한스크롤=>기존 results+새 results누적
         state.data.results = [...state.data.results, ...action.payload.results];
         state.data.next = action.payload.next;
-
-        //count는 처음 값 그대로 유지 or 업데이트
         state.data.count = action.payload.count;
       })
       //rejected:api 호출실패
