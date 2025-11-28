@@ -24,4 +24,4 @@
 
 ## 사이트 배포
 
-- [포켓몬 도감 바로가기]
+- [포켓몬 도감 바로가기](https://gulggum.github.io/pokemon-drawing-book-react/)
