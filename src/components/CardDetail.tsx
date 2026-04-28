@@ -169,12 +169,14 @@ const Title = styled.div<ColorProps>`
   width: 100%;
   font-size: 2rem;
   font-weight: 600;
-  padding-left: 1rem;
+  padding: 0.5rem 1rem;
   background-color: ${(props) => props.titlecolor};
   display: flex;
   color: ${(props) => props.theme.detailTitle};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 const Number = styled.span`
   margin-right: 1rem;

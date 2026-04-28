@@ -11,7 +11,7 @@ import { toggleTheme } from "../store/themeSlice";
 
 const HeaderPage = () => {
   const imageType = useSelector(
-    (state: RootState) => state.imageType.selectedType
+    (state: RootState) => state.imageType.selectedType,
   );
   const dispatch = useAppDispatch();
   const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -23,13 +23,7 @@ const HeaderPage = () => {
     <>
       <Header>
         <Link to={"/"}>
-          <Title>
-            <LogoImg
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/2052px-Pok%C3%A9_Ball_icon.svg.png"
-              alt="logo"
-            />
-            Pokémon
-          </Title>
+          <Title>Pokémon</Title>
         </Link>
         <Menu>
           {" "}
@@ -75,11 +69,7 @@ const Title = styled.div`
     color: orange;
   }
 `;
-const LogoImg = styled.img`
-  width: 40px;
-  margin-top: 5px;
-  margin-right: 5px;
-`;
+
 const Menu = styled.div`
   width: 150px;
   display: flex;
